@@ -3,6 +3,16 @@ import React, { useState, useContext } from 'react';
 import ApplicationContext from '../../contexts/application-context'
 import Properties from '../../components/properties/index'
 
+import {
+    Accordion,
+    AccordionItem,
+    AccordionButton,
+    AccordionPanel,
+    AccordionIcon,
+} from '@chakra-ui/react'
+
+import { Box } from '@chakra-ui/react'
+
 export default function Sidebar() {
     const { state, setState } = useContext(ApplicationContext)
     const { showSidebar } = state;
@@ -18,18 +28,7 @@ export default function Sidebar() {
         boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
         transition: 'right 0.3s ease',
         zIndex: 100,
-        padding: '1rem',
         borderBottomLeftRadius: '5rem'
-    };
-
-    const sectionStyle = {
-        marginBottom: '2px',
-    };
-
-    const separatorStyle = {
-        height: '1px',
-        backgroundColor: '#ccc',
-        margin: '10px 0',
     };
 
     const sections = [
@@ -39,28 +38,33 @@ export default function Sidebar() {
         },
         {
             title: 'Features',
-            component: null
+            component: Properties
         },
         {
             title: 'Access control',
-            component: null
+            component: Properties
         }
     ];
 
-
     return (
         <div style={sidebarStyle}>
-            {sections.map((section, index) => (
-                <div key={index} style={sectionStyle}>
-                    <h5 className='m-0 p-0'>{section.title}</h5>
-                    {section.component && (
-                        <div style={{ marginTop: '10px' }}>
+            <Accordion>
+                {sections.map((section, index) => (
+                    <AccordionItem key={index}>
+                        <h2>
+                            <AccordionButton>
+                                <Box as='span' flex="1" textAlign='left'>
+                                    {section.title}
+                                </Box>
+                                <AccordionIcon />
+                            </AccordionButton>
+                        </h2>
+                        <AccordionPanel pb={4}>
                             <section.component />
-                        </div>
-                    )}
-                    {index < sections.length - 1 && <div style={separatorStyle}></div>}
-                </div>
-            ))}
+                        </AccordionPanel>
+                    </AccordionItem>
+                ))}
+            </Accordion>
         </div>
     );
 }

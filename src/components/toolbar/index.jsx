@@ -1,3 +1,5 @@
+import { Divider } from '@chakra-ui/react'
+
 export const Toolbar = () => {
     const numberColumns = 2;
     const styleToolbarFlow = {
@@ -82,7 +84,7 @@ export const Toolbar = () => {
                         {item.icon} {item.label}
                     </div>
                 ))}
-                <div style={separatorStyle}></div>
+                <Divider style={separatorStyle}></Divider>
                 <div style={titleStyle}>Custom Fields</div>
                 {customFields.map((field, index) => (
                     <div

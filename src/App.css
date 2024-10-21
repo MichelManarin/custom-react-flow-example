@@ -27,11 +27,9 @@
 }
 
 .properties-panel {
-  padding: 10px;
   background-color: #f0f0f0;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin: 10px;
 }
 
 .property-group {

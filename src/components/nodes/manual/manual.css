@@ -1,7 +1,6 @@
 .node-container {
     background: #ffffff;
     border-radius: 8px;
-    border: 1px solid #e0e0e0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 10px;
     width: 250px;
@@ -14,25 +13,15 @@
   }
   
   .node-header {
-    border-bottom: 1px solid #e0e0e0;
     padding-bottom: 5px;
     margin-bottom: 5px;
+    font-weight: bold;
   }
   
   .node-header h4 {
     margin: 0;
     font-size: 14px;
     color: #333;
-  }
-  
-  .node-stats {
-    font-size: 12px;
-    color: #555;
-    margin-bottom: 10px;
-  }
-  
-  .node-stats p {
-    margin: 5px 0;
   }
   
   .toggle-description {

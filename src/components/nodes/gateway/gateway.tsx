@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Handle, Position } from '@xyflow/react';
+
 import './gateway.css';
 
 export function GatewayNode({ data }) {

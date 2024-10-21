@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ApplicationContext from '../../contexts/application-context';
+import { Input } from '@chakra-ui/react'
+import { Textarea } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 
 const Properties = () => {
     const { state, setState } = useContext(ApplicationContext);
@@ -52,25 +55,13 @@ const Properties = () => {
     }
 
     return (
-        <div>
-            {/* <div style={{ marginBottom: '8px' }}>
-                <label style={{ display: 'block' }}>Name:</label>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={handleNameChange}
-                    style={{ width: '100%', padding: '4px' }}
-                />
-            </div>
-            <div>
-                <label style={{ display: 'block' }}>Description:</label>
-                <textarea
-                    value={description}
-                    onChange={handleDescriptionChange}
-                    rows={3}
-                    style={{ width: '100%', padding: '4px' }}
-                />
-            </div> */}
+        <div className='m-1'>
+            <Box mb={4}>
+                <Input placeholder='Name' size='sm' />
+            </Box>
+            <Box mb={4}>
+                <Textarea placeholder='Here is a sample placeholder' />
+            </Box>
         </div>
     );
 };

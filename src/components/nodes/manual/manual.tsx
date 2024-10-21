@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Handle, Position } from '@xyflow/react';
+import Stats from '../../../components/stats';
 import './Manual.css';
 
 const handleStyle = { left: 10 };
@@ -18,9 +19,7 @@ export function ManualNode({ data }) {
         <div className="node-header">
           <h4>📋 {data.name}</h4>
         </div>
-        <div className="node-stats">
-          <p><b>Counter: {data.count || 99} | Delays: 3 | Avg time: {data.averageTime || '45m'} </b></p>
-        </div>
+        <Stats data={null} />
         <button className="toggle-description" onClick={toggleDescription}>
           {showDescription ? 'Collect' : 'Learn more'}
         </button>
