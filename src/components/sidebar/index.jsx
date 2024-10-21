@@ -24,7 +24,7 @@ export default function Sidebar() {
         right: showSidebar ? 0 : '-330px',
         width: '300px',
         height: '100vh',
-        backgroundColor: '#f9f9f9',
+        backgroundColor: '#ffffff',
         boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
         transition: 'right 0.3s ease',
         zIndex: 100,
@@ -59,8 +59,8 @@ export default function Sidebar() {
                                 <AccordionIcon />
                             </AccordionButton>
                         </h2>
-                        <AccordionPanel pb={4}>
-                            <section.component />
+                        <AccordionPanel>
+                            <section.component/>
                         </AccordionPanel>
                     </AccordionItem>
                 ))}

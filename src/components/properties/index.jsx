@@ -1,8 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ApplicationContext from '../../contexts/application-context';
-import { Input } from '@chakra-ui/react'
-import { Textarea } from '@chakra-ui/react'
-import { Box } from '@chakra-ui/react'
+import {
+    FormControl,
+    FormErrorMessage,
+    FormHelperText,
+    FormLabel,
+    Input,
+    Box,
+    Textarea,
+    Stack
+} from "@chakra-ui/react";
 
 const Properties = () => {
     const { state, setState } = useContext(ApplicationContext);
@@ -56,11 +63,27 @@ const Properties = () => {
 
     return (
         <div className='m-1'>
-            <Box mb={4}>
-                <Input placeholder='Name' size='sm' />
-            </Box>
-            <Box mb={4}>
-                <Textarea placeholder='Here is a sample placeholder' />
+            <Box mb={1} marginBottom={4}>
+                <Stack spacing={3} mb={1} paddingTop={3}>
+                    <FormControl variant="floating" id="first-name" >
+                        <Input placeholder=" " value={"Manual"} disabled/>
+                        <FormLabel>Type</FormLabel>
+                        {/* <FormHelperText>Keep it very short and sweet!</FormHelperText>
+                        <FormErrorMessage>Your First name is invalid</FormErrorMessage> */}
+                    </FormControl>
+                    <FormControl variant="floating" id="first-name">
+                        <Input placeholder=" " />
+                        <FormLabel>Name</FormLabel>
+                        {/* <FormHelperText>Keep it very short and sweet!</FormHelperText>
+                        <FormErrorMessage>Your First name is invalid</FormErrorMessage> */}
+                    </FormControl>
+                    <FormControl variant="floating" id="first-name">
+                        <Textarea placeholder=" "/>
+                        <FormLabel>Type</FormLabel>
+                        {/* <FormHelperText>Keep it very short and sweet!</FormHelperText>
+                        <FormErrorMessage>Your First name is invalid</FormErrorMessage> */}
+                    </FormControl>
+                </Stack>
             </Box>
         </div>
     );
