@@ -1,6 +1,6 @@
 # npm run dev
 
-![react-flow-custom-nodes](https://github.com/user-attachments/assets/9aeb9451-0df1-4625-8e47-b16f77f2c0c4)
+![image](https://github.com/user-attachments/assets/57935d72-7f4c-41db-b158-1649a1ac232b)
 
 # React + Vite
 
