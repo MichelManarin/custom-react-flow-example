@@ -10,6 +10,18 @@ const activeLabelStyles = {
   transform: "scale(0.85) translateY(-24px)"
 };
 
+let initialNodes = [
+  { id: '3', position: { x: 290, y: 15 }, data: { label: '3', name: "Loan Analysis", description: "" }, type: 'manual' },
+  { id: '4', position: { x: 520, y: 250 }, data: { label: '4', name: "Reject email", description: "" }, type: 'email' },
+  { id: '6', position: { x: 720, y: 560 }, data: { label: '6', name: "Approved email", description: "" }, type: 'email' },
+  { id: '5', position: { x: 720, y: 450 }, data: { label: '5', name: "Decision", description: "" }, type: 'gateway' },
+];
+
+let initialEdges = [{ id: 'e3-4', source: '3', target: '4', animated: true, markerEnd: { type: 'arrowclosed' }, style: { strokeWidth: 2, strokeDasharray: '5' } },
+{ id: 'e4-5', source: '4', target: '5', animated: true, markerEnd: { type: 'arrowclosed' }, style: { strokeWidth: 2, strokeDasharray: '5' } },
+{ id: 'e5-6', source: '5', target: '6', animated: true, markerEnd: { type: 'arrowclosed' }, style: { strokeWidth: 2, strokeDasharray: '5' } },
+];
+
 export const theme = extendTheme({
   components: {
     Form: {
@@ -45,30 +57,32 @@ export const theme = extendTheme({
 
 export default function App() {
   const generalStyle = { width: '100vw', height: '100vh', position: 'relative' };
+
   const [state, setState] = useState({
-    nodeSelected: null,
     showSidebar: false,
+    nodeSelected: null,
+    initialEdges,
+    initialNodes,
   });
-  
+
+  console.log("state ", state);
+
+  const updateNode = (id, newData) => {
+    setState((prevState) => ({
+      ...prevState,
+      initialNodes: prevState.initialNodes.map((node) =>
+        node.id === id ? { ...node, data: { ...node.data, ...newData } } : node
+      ),
+      nodeSelected: { ...prevState.nodeSelected, data: { ...prevState.nodeSelected.data, ...newData } },
+    }));
+  };
 
   useEffect(() => {
-    // const handleBeforeUnload = (event) => {
-    //   const message = 'Are you sure? Some change will be los.';
-    //   event.returnValue = message; 
-    //   return message;
-    // };
-
-    // window.addEventListener('beforeunload', handleBeforeUnload);
-
-    // return () => {
-    //   window.removeEventListener('beforeunload', handleBeforeUnload);
-    // };
   }, []);
- 
 
   return (
     <div style={generalStyle}>
-      <ApplicationContext.Provider value={{ state, setState }}>
+      <ApplicationContext.Provider value={{ state, setState, updateNode }}>
         <ChakraProvider theme={theme}>
           <ReactFlowProvider>
             <Flow />

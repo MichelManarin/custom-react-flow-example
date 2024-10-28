@@ -25,7 +25,8 @@ export const Toolbar = () => {
 
     const styleItemToolbarFlow = {
         cursor: 'grab',
-        padding: '0.3rem',
+        fontWeight: 400,
+        padding: '0.2rem',
         borderColor: '#1b19194d',
         borderStyle: 'dashed',
         borderWidth: '1px',
@@ -38,9 +39,9 @@ export const Toolbar = () => {
     const titleStyle = {
         gridColumn: `span ${numberColumns}`,
         fontWeight: 'bold',
-        fontSize: '0.9rem',
-        marginBottom: '5px',
-        textAlign: 'center',
+        fontSize: '0.8rem',
+        padding: '0.3rem',
+        paddingLeft: '0rem'
     };
 
     const separatorStyle = {
@@ -56,7 +57,11 @@ export const Toolbar = () => {
         { type: 'gateway', icon: '🤔', label: 'Decisão' },
         { type: 'gateway', icon: '📝', label: 'Checklist' },
         { type: 'gateway', icon: '📝', label: 'Formulário' },
-        { type: 'gateway', icon: '📝', label: 'Comming' },
+        { type: 'gateway', icon: '📝', label: 'Documental' },
+        { type: 'gateway', icon: '📝', label: 'Integração' },
+        { type: 'gateway', icon: '📝', label: 'Escalonamento' },
+        { type: 'gateway', icon: '📝', label: 'Notificação' },
+        { type: 'gateway', icon: '📝', label: 'Espera' },
     ];
 
     const customFields = [
@@ -84,7 +89,7 @@ export const Toolbar = () => {
                         {item.icon} {item.label}
                     </div>
                 ))}
-                <Divider style={separatorStyle}></Divider>
+                {/* <Divider style={separatorStyle}></Divider> */}
                 <div style={titleStyle}>Custom Fields</div>
                 {customFields.map((field, index) => (
                     <div

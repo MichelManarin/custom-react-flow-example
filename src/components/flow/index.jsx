@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useContext } from 'react';
+import React, { useCallback, useMemo, useContext, useEffect } from 'react';
 import {
     ReactFlow,
     MiniMap,
@@ -6,7 +6,6 @@ import {
     Background,
     useNodesState,
     useEdgesState,
-    addEdge,
     useReactFlow,
 } from '@xyflow/react';
 
@@ -19,31 +18,49 @@ import ApplicationContext from '../../contexts/application-context';
 import '@xyflow/react/dist/style.css';
 import '../../App.css';
 
-const initialNodes = [
-    { id: '3', position: { x: 500, y: 200 }, data: { label: '3', name: "Loan Analysis", description: "" }, type: 'manual' },
-    { id: '4', position: { x: 500, y: 400 }, data: { label: '4', name: "Reject email", description: "" }, type: 'email' },
-    { id: '6', position: { x: 700, y: 800 }, data: { label: '6', name: "Approved email", description: "" }, type: 'email' },
-    { id: '5', position: { x: 610, y: 600 }, data: { label: '5', name: "Decision", description: "" }, type: 'gateway' },
-];
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+const styleFlow = {
+    width: '100%', height: '100%', position: 'relative'
+}
+
+const styleControls = {
+    color: 'black'
+}
 
 export default function Flow() {
     const { state, setState } = useContext(ApplicationContext);
-
+    const { initialNodes, initialEdges } = state;
+    
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const { getViewport } = useReactFlow();
-
-    const onConnect = useCallback(
-        (params) => setEdges((eds) => addEdge(params, eds)),
-        [setEdges],
-    );
 
     const nodeTypes = useMemo(() => ({ manual: ManualNode, email: EmailNode, gateway: GatewayNode }), []);
 
     const generateId = useCallback(() => {
         return `${Date.now().toString(36)}-${Math.random().toString(36).substr(2, 9)}`;
     }, []);
+
+    const onConnect = (params) => {
+        setEdges((eds) => {
+            const newEdges = [
+                ...eds,
+                {
+                    ...params,
+                    id: `${params.source}-${params.target}`,
+                    animated: true,
+                    markerEnd: { type: 'arrowclosed' },
+                    style: { strokeWidth: 2, strokeDasharray: '5' },
+                },
+            ];
+            setState((prevState) => ({ ...prevState, initialEdges: newEdges }));
+            return newEdges;
+        });
+    };
+
+    useEffect(() => {
+        setNodes(initialNodes);
+        setEdges(initialEdges);
+    }, [initialNodes, initialEdges, setNodes, setEdges]);
 
     const onDrop = useCallback(
         (event) => {
@@ -63,62 +80,61 @@ export default function Flow() {
                 type,
                 position,
                 data: {
-                    name: `Untitle`,
+                    name: ``,
                     label: `${type} node`,
                     description: "",
                 },
             };
 
-            setNodes((nds) => nds.concat(newNode));
+            setNodes((nds) => {
+                const updatedNodes = nds.concat(newNode);
+                setState((prevState) => ({ ...prevState, initialNodes: updatedNodes }));
+                return updatedNodes;
+            });
         },
-        [getViewport, setNodes, generateId]
+        [getViewport, setNodes, generateId, setState]
     );
 
-    const updateNode = useCallback((id, newData) => {
-        setNodes((nds) =>
-            nds.map((node) => (node.id === id ? { ...node, data: { ...node.data, ...newData } } : node))
-        );
-    }, [setNodes]);
+    const handleNodesChange = useCallback(
+        (changes) => {
+            onNodesChange(changes);
+        },
+        [onNodesChange]
+    );
 
-    const deleteNode = useCallback((id) => {
-        setNodes((nds) => nds.filter((node) => node.id !== id));
-        setEdges((eds) => eds.filter((edge) => edge.source !== id && edge.target !== id));
-    }, [setNodes, setEdges]);
+    const handleEdgesChange = useCallback(
+        (changes) => {
+            onEdgesChange(changes);
+            setState((prevState) => ({ ...prevState, initialEdges: edges }));
+        },
+        [edges, onEdgesChange, setState]
+    );
 
-    const onDragOver = useCallback((event) => {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = 'move';
-    }, []);
-
-    const onPaneClick = useCallback(() => {
-        setState({
-            ...state,
-            showSidebar: false,
-        });
-    }, [state, setState]);
-
-    const onNodeClick = useCallback((event, node) => {
-        setState({
-            ...state,
-            showSidebar: true,
-            nodeSelected: node,
-        });
-    }, [state, setState]);
+    const handleNodeDragStop = useCallback(
+        (_, node) => {
+            setState((prevState) => ({
+                ...prevState,
+                initialNodes: nodes.map((n) => (n.id === node.id ? node : n)),
+            }));
+        },
+        [nodes, setState]
+    );
 
     return (
-        <div style={{ width: '100%', height: '100%', position: 'relative' }} onDrop={onDrop} onDragOver={onDragOver}>
+        <div style={styleFlow} onDrop={onDrop} onDragOver={(event) => event.preventDefault()}>
             <Toolbar />
             <ReactFlow
                 nodeTypes={nodeTypes}
                 nodes={nodes}
                 edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
+                onNodesChange={handleNodesChange}
+                onEdgesChange={handleEdgesChange}
                 onConnect={onConnect}
-                onNodeClick={onNodeClick}
-                onPaneClick={onPaneClick}
+                onNodeDragStop={handleNodeDragStop} 
+                onPaneClick={() => setState({ ...state, showSidebar: false })}
+                onNodeClick={(event, node) => setState({ ...state, showSidebar: true, nodeSelected: node })}
             >
-                <Controls showFitView={false} style={{ color: 'black' }} />
+                <Controls showFitView={false} style={styleControls} />
                 <MiniMap />
                 <Background bgColor="#f4f4f5" variant="dots" gap={12} size={1} />
             </ReactFlow>
